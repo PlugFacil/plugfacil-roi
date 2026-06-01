@@ -32,7 +32,6 @@ export default function PersonalizadoCharts({ results }: { results: { yearly: YR
     { name: 'Royalties', value: Math.round(y1.royalties) },
     { name: 'Plataforma', value: Math.round(y1.retencaoPlataforma) },
     { name: 'Impostos', value: Math.round(y1.impostos) },
-    { name: 'Provis.', value: Math.round(y1.provisionamento) },
   ].filter(d => d.value > 0) : [];
 
   const fmt = (val: any) => {

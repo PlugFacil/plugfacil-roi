@@ -201,14 +201,14 @@ export function runSimulation(config: SimulationConfig): SimulationResults {
     // ── Resultado Operacional ──
     const resultadoOperacional = receitaTotal - retencaoPlataforma - custoEnergia - royalties;
 
-    // ── Provisionamento ──
+    // ── Provisionamento (não é custo — é dinheiro que fica com o franqueado) ──
     const provisionamento = Math.max(0, resultadoOperacional * PROVISIONAMENTO_PERCENTUAL);
 
-    // ── Custos totais ──
-    const custoTotal = retencaoPlataforma + custoEnergia + royalties + impostos + provisionamento;
+    // ── Custos totais (sem provisionamento) ──
+    const custoTotal = retencaoPlataforma + custoEnergia + royalties + impostos;
 
-    // ── Lucro líquido (antes investimento) ──
-    const lucroLiquido = resultadoOperacional - impostos - provisionamento;
+    // ── Lucro líquido (antes investimento) — inclui provisionamento ──
+    const lucroLiquido = resultadoOperacional - impostos;
 
     // ── Fluxo de Caixa Livre ──
     const fluxoCaixaLivre = ano === 1 ? lucroLiquido - investimentoTotal : lucroLiquido;

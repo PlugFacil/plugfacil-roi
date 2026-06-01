@@ -374,7 +374,6 @@ export default function SimulacaoClient() {
                   <span>Retenção plataforma: <span className="text-white">{params.retencaoPct}% + R${params.mensalidadeMensal}/mês</span></span>
                   <span>Royalties PlugFácil: <span className="text-white">{params.royaltiesPct}%</span></span>
                   <span>Impostos: <span className="text-white">{params.impostosPct}%</span></span>
-                  <span>Provisionamento: <span className="text-white">{params.provisionamentoPct}%</span></span>
                   <span>Perdas energia: <span className="text-white">{params.perdasEnergia}%</span></span>
                   <span>Ativação: <span className="text-white">R${params.taxaAtivacao}/recarga</span></span>
                 </div>
@@ -520,7 +519,6 @@ export default function SimulacaoClient() {
                     { label: `Royalties PlugFácil (${params?.royaltiesPct}% faturamento)`, value: y.royalties, color: 'text-red-400', pctOfReceita: (y.royalties / receitaTotal * 100) },
                     { label: '= Resultado Operacional', value: y.resultadoOperacional, color: 'text-blue-400', bold: true, pctOfReceita: (y.resultadoOperacional / receitaTotal * 100) },
                     { label: `Impostos (${params?.impostosPct}% lucro operacional)`, value: y.impostos, color: 'text-red-400', pctOfReceita: (y.impostos / receitaTotal * 100) },
-                    { label: `Provisionamento (${params?.provisionamentoPct}% lucro operacional)`, value: y.provisionamento, color: 'text-red-400', pctOfReceita: (y.provisionamento / receitaTotal * 100) },
                     { label: '= Lucro Líquido', value: y.lucroLiquido, color: 'text-emerald-400', bold: true, pctOfReceita: (y.lucroLiquido / receitaTotal * 100) },
                   ];
                   return (

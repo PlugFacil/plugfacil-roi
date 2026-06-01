@@ -96,8 +96,8 @@ function runCustomSimulation(c: CustomConfig): CustomResults {
     const resultadoOperacional = receitaTotal - custoGestaoPlatforma - custoEnergia - taxaFranquiaAno;
     const impostos = receitaTotal * (c.impostosPct / 100);
     const provisionamento = Math.max(0, receitaTotal * (c.provisionamentoPct / 100));
-    const custoTotal = custoGestaoPlatforma + custoEnergia + taxaFranquiaAno + impostos + provisionamento;
-    const lucroLiquido = resultadoOperacional - impostos - provisionamento;
+    const custoTotal = custoGestaoPlatforma + custoEnergia + taxaFranquiaAno + impostos;
+    const lucroLiquido = resultadoOperacional - impostos;
 
     // Amortização linear do investimento: 10% ao ano durante 10 anos
     const amortizacaoInvestimentoAno = ano <= 10 ? investimentoTotal * 0.1 : 0;
@@ -389,7 +389,6 @@ export default function PersonalizadoClient() {
           <Field label="Royalties PlugFácil" field="royaltiesPct" min={0} max={50} suffix="% receita" />
           <Field label="Taxa de Franquia" field="taxaFranquiaMensal" min={0} max={5000} step={50} suffix="R$/mês" />
           <Field label="Impostos s/ receita" field="impostosPct" min={0} max={50} suffix="%" />
-          <Field label="Provisionamento" field="provisionamentoPct" min={0} max={50} suffix="% receita" />
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
           <Field label="Perdas energia" field="perdasEnergia" min={0} max={20} suffix="%" />

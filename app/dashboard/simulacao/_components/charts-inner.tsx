@@ -23,7 +23,6 @@ export default function ChartsInner({ results }: { results: SimulationResults })
     { name: 'Royalties 12%', value: Math.round(y1.royalties) },
     { name: 'Plataforma 10%', value: Math.round(y1.retencaoPlataforma) },
     { name: 'Impostos 10%', value: Math.round(y1.impostos) },
-    { name: 'Provis. 8%', value: Math.round(y1.provisionamento) },
   ].filter((d) => (d.value ?? 0) > 0) : [];
 
   // Revenue breakdown year 1
