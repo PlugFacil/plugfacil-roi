@@ -1,0 +1,144 @@
+{
+  "veiculos_eletricos": [
+    {
+      "modelo": "BYD Dolphin Mini",
+      "tipo": "eletrico",
+      "bateria_kwh": 38,
+      "ac_max_kw": 6.6,
+      "dc_max_kw": 40
+    },
+    {
+      "modelo": "BYD Dolphin",
+      "tipo": "eletrico",
+      "bateria_kwh": 44.9,
+      "ac_max_kw": 7,
+      "dc_max_kw": 60
+    },
+    {
+      "modelo": "BYD Dolphin Plus",
+      "tipo": "eletrico",
+      "bateria_kwh": 60.4,
+      "ac_max_kw": 7,
+      "dc_max_kw": 80
+    },
+    {
+      "modelo": "BYD Yuan Pro",
+      "tipo": "eletrico",
+      "bateria_kwh": 45.1,
+      "ac_max_kw": 7,
+      "dc_max_kw": 65
+    },
+    {
+      "modelo": "BYD Yuan Plus",
+      "tipo": "eletrico",
+      "bateria_kwh": 60.5,
+      "ac_max_kw": 7,
+      "dc_max_kw": 80
+    },
+    {
+      "modelo": "BYD Seal",
+      "tipo": "eletrico",
+      "bateria_kwh": 82.5,
+      "ac_max_kw": 11,
+      "dc_max_kw": 150
+    },
+    {
+      "modelo": "Volvo EX30",
+      "tipo": "eletrico",
+      "bateria_kwh": 51,
+      "ac_max_kw": 11,
+      "dc_max_kw": 150
+    },
+    {
+      "modelo": "GWM Ora 03",
+      "tipo": "eletrico",
+      "bateria_kwh": 63,
+      "ac_max_kw": 6.6,
+      "dc_max_kw": 80
+    },
+    {
+      "modelo": "Geely EX2",
+      "tipo": "eletrico",
+      "bateria_kwh": 39.4,
+      "ac_max_kw": 6.6,
+      "dc_max_kw": 70
+    },
+    {
+      "modelo": "Geely EX5",
+      "tipo": "eletrico",
+      "bateria_kwh": 60.2,
+      "ac_max_kw": 7,
+      "dc_max_kw": 100
+    },
+    {
+      "modelo": "Renault Kwid E-Tech",
+      "tipo": "eletrico",
+      "bateria_kwh": 26.8,
+      "ac_max_kw": 7,
+      "dc_max_kw": 30
+    },
+    {
+      "modelo": "Chevrolet Equinox EV",
+      "tipo": "eletrico",
+      "bateria_kwh": 85,
+      "ac_max_kw": 22,
+      "dc_max_kw": 150
+    },
+    {
+      "modelo": "BYD Song Pro",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 18.3,
+      "ac_max_kw": 3.3,
+      "dc_max_kw": 0
+    },
+    {
+      "modelo": "BYD Song Plus",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 18.3,
+      "ac_max_kw": 3.3,
+      "dc_max_kw": 0
+    },
+    {
+      "modelo": "BYD King",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 8.3,
+      "ac_max_kw": 3.3,
+      "dc_max_kw": 0
+    },
+    {
+      "modelo": "GWM Haval H6 PHEV",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 19,
+      "ac_max_kw": 6.6,
+      "dc_max_kw": 33
+    },
+    {
+      "modelo": "GWM Haval H6 GT",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 34,
+      "ac_max_kw": 6.6,
+      "dc_max_kw": 50
+    },
+    {
+      "modelo": "GWM Tank 300",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 37.1,
+      "ac_max_kw": 6.6,
+      "dc_max_kw": 50
+    },
+    {
+      "modelo": "Jaecoo 7",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 18.3,
+      "ac_max_kw": 3.3,
+      "dc_max_kw": 40
+    },
+    {
+      "modelo": "Volvo XC60 PHEV",
+      "tipo": "hibrido_plugin",
+      "bateria_kwh": 18.8,
+      "ac_max_kw": 6.4,
+      "dc_max_kw": 0
+    }
+  ]
+}

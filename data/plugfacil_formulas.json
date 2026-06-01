@@ -1,0 +1,14 @@
+{
+  "formulas": {
+    "energia_dc_mes": "recargas_dc_dia * energia_media_recarga_dc * dias_mes",
+    "energia_ac_mes": "recargas_ac_dia * energia_media_recarga_ac * dias_mes",
+    "receita_dc": "energia_dc_mes * preco_recarga_dc",
+    "receita_ac": "energia_ac_mes * preco_recarga_ac",
+    "custo_energia": "energia_total_mes * custo_kwh",
+    "lucro_operacional": "receita_total - custo_energia",
+    "payback": "investimento / lucro_anual",
+    "roi": "(lucro_total - investimento) / investimento",
+    "vpl": "npv(taxa_desconto, fluxos_caixa)",
+    "tir": "irr(fluxos_caixa)"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "financeiro": {
+    "horizonte_analise_anos": 10,
+    "taxa_desconto": 0.108
+  }
+}
