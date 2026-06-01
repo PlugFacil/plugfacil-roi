@@ -12,7 +12,6 @@ import {
 } from '@/lib/financial-engine';
 import { getModelMetadata, type ModelMetadata } from '@/lib/model-metadata';
 import Link from 'next/link';
-import { CDIComparison } from '../../_components/cdi-comparison';
 
 const CompCharts = dynamic(() => import('./comp-charts'), { ssr: false, loading: () => <div className="h-64 flex items-center justify-center text-gray-500">Carregando gráficos...</div> });
 
@@ -43,9 +42,6 @@ export default function ComparativoClient() {
         </h1>
         <p className="text-gray-500 text-sm mt-1">Compare investimento, faturamento, ROI e diferenciais de cada modelo.</p>
       </motion.div>
-
-      {/* CDI Comparison */}
-      <CDIComparison />
 
       {/* Cenário selector */}
       <div className="flex gap-2">
@@ -113,12 +109,12 @@ export default function ComparativoClient() {
                   <p className="text-blue-400 font-bold text-sm">{formatCurrency(r?.lucroMensalAno1 ?? 0)}</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-2">
-                  <p className="text-xs text-gray-500">ROI 10 anos</p>
-                  <p className={`font-bold text-sm ${(r?.roiPercent ?? 0) > 0 ? 'text-emerald-400' : 'text-red-400'}`}>{formatPercent(r?.roiPercent ?? 0)}</p>
+                  <p className="text-xs text-gray-500">Rendimento vs CDI</p>
+                  <p className={`font-bold text-sm ${(r?.roiPercent ?? 0) > 10.5 ? 'text-emerald-400' : 'text-red-400'}`}>{formatPercent((r?.roiPercent ?? 0) - 10.5)}</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-2">
-                  <p className="text-xs text-gray-500">Margem Líquida Ano 1</p>
-                  <p className="text-purple-400 font-bold text-sm">{formatPercent(r?.margemMedia ?? 0)}</p>
+                  <p className="text-xs text-gray-500">Rendimento Médio Anual</p>
+                  <p className="text-purple-400 font-bold text-sm">{formatPercent((r?.lucroMensalAno1 ?? 0) * 12 / (m?.investimento ?? 1) * 100)}</p>
                 </div>
               </div>
 

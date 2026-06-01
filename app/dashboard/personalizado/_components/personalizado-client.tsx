@@ -10,7 +10,6 @@ import {
 import { formatCurrency, formatPercent } from '@/lib/financial-engine';
 import type { CustomConfig, CustomYearlyResult, CustomResults } from './personalizado-types';
 import { exportPersonalizadoPDF } from './personalizado-pdf';
-import { CDIComparison } from '../../_components/cdi-comparison';
 
 const PersonalizadoCharts = dynamic(() => import('./personalizado-charts'), {
   ssr: false,
@@ -100,7 +99,9 @@ function runCustomSimulation(c: CustomConfig): CustomResults {
     const custoTotal = custoGestaoPlatforma + custoEnergia + taxaFranquiaAno + impostos + provisionamento;
     const lucroLiquido = resultadoOperacional - impostos - provisionamento;
 
-    const lucroLiquidoEconomico = lucroLiquido - depreciacaoEquipamentoAno - amortizacaoInstalacaoAno;
+    // Amortização linear do investimento: 10% ao ano durante 10 anos
+    const amortizacaoInvestimentoAno = ano <= 10 ? investimentoTotal * 0.1 : 0;
+    const lucroLiquidoEconomico = lucroLiquido - depreciacaoEquipamentoAno - amortizacaoInstalacaoAno - amortizacaoInvestimentoAno;
     const valorResidualEquipamento = Math.max(0, c.custoEquipamento - depreciacaoEquipamentoAno * ano);
 
     // CDI comparison: previous profits compound at CDI for the year, then add this year's profit.
@@ -267,9 +268,6 @@ export default function PersonalizadoClient() {
         </h1>
         <p className="text-gray-500 text-sm mt-1">Monte sua própria simulação com todas as premissas editáveis.</p>
       </motion.div>
-
-      {/* CDI Comparison */}
-      <CDIComparison />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-6">
         {/* Infrastructure */}
@@ -491,9 +489,11 @@ export default function PersonalizadoClient() {
             <p className="text-xs text-gray-500 mb-3">
               {(() => {
                 const inv = config.custoEquipamento + config.custoInstalacao;
+                const total = config.custoEquipamento + config.custoInstalacao + (config.custoEquipamento + config.custoInstalacao);
                 const deprecAno = (config.custoEquipamento / config.vidaUtilMeses + config.custoInstalacao / config.prazoContratoMeses) * 12;
-                const taxaAno = inv > 0 ? (deprecAno / inv * 100) : 0;
-                return `Depreciação linear: ${formatCurrency(deprecAno)}/ano (${taxaAno.toFixed(1)}% ao ano sobre ${formatCurrency(inv)})`;
+                const amortInvestAno = total * 0.1;
+                const taxaAno = total > 0 ? ((deprecAno + amortInvestAno) / total * 100) : 0;
+                return `Depreciação linear: ${formatCurrency(deprecAno)}/ano + Amortização investimento: ${formatCurrency(amortInvestAno)}/ano (primeiros 10 anos) = Total: ${formatCurrency(deprecAno + amortInvestAno)}/ano`;
               })()}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
