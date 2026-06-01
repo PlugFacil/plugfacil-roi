@@ -20,9 +20,9 @@ export default function ChartsInner({ results }: { results: SimulationResults })
   const y1 = results?.yearly?.[0];
   const costPieData = y1 ? [
     { name: 'Energia', value: Math.round(y1.custoEnergia) },
-    { name: 'Royalties 12%', value: Math.round(y1.royalties) },
-    { name: 'Plataforma 10%', value: Math.round(y1.retencaoPlataforma) },
-    { name: 'Impostos 10%', value: Math.round(y1.impostos) },
+    { name: 'Royalties', value: Math.round(y1.royalties) },
+    { name: 'Plataforma', value: Math.round(y1.retencaoPlataforma) },
+    { name: 'Impostos', value: Math.round(y1.impostos) },
   ].filter((d) => (d.value ?? 0) > 0) : [];
 
   // Revenue breakdown year 1
