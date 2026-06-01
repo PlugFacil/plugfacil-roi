@@ -33,14 +33,14 @@ export default function DashboardShell({ children }: { children: React.ReactNode
               {sideOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
             <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="relative w-12 h-12 bg-white rounded-lg p-1">
-                <Image src="/logo.png" alt="PlugFácil" fill className="object-contain" />
+              <div className="relative w-10 h-10">
+                <Image src="/logo-branco.png" alt="PlugFácil" fill className="object-contain" />
               </div>
               <span className="text-lg font-bold text-white hidden sm:block">PlugFácil</span>
             </Link>
             <div className="hidden sm:flex items-center gap-1 ml-2">
-              <Zap className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="text-xs text-gray-500">Simulador Financeiro</span>
+              <Zap className="w-3.5 h-3.5 text-primary" />
+              <span className="text-xs text-gray-400">Simulador Financeiro</span>
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                   href={item.href}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition ${
                     active
-                      ? 'bg-emerald-500/20 text-emerald-400'
+                      ? 'bg-green-500/20 text-green-400'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
@@ -66,7 +66,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
           </nav>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-full font-medium hidden sm:block">Ferramenta Comercial</span>
+            <span className="text-xs text-green-400 bg-green-500/10 px-3 py-1.5 rounded-full font-medium hidden sm:block">Ferramenta Comercial</span>
           </div>
         </div>
       </header>
@@ -105,7 +105,7 @@ export default function DashboardShell({ children }: { children: React.ReactNode
                       href={item.href}
                       onClick={() => setSideOpen(false)}
                       className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition ${
-                        active ? 'bg-emerald-500/20 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5'
+                        active ? 'bg-green-500/20 text-green-400' : 'text-gray-400 hover:text-white hover:bg-white/5'
                       }`}
                     >
                       <Icon className="w-5 h-5" />

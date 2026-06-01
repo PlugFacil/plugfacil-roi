@@ -2,10 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'ObjectSans';
+  src: url('/fonts/ObjectSans-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ObjectSans';
+  src: url('/fonts/ObjectSans-Heavy.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ObjectSans';
+  src: url('/fonts/ObjectSans-Slanted.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+}
+
 :root {
-  --accent: #00B386;
-  --accent-dark: #009970;
-  --accent-light: #E6F9F3;
+  --accent: #4CAF50;
+  --accent-dark: #2E7D32;
+  --accent-light: #81C784;
   --bg-dark: #0F1629;
   --bg-card: #1A2238;
 }
@@ -13,7 +34,7 @@
 [data-hydration-error] { display: none !important; }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'ObjectSans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .gradient-accent {
