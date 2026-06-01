@@ -14,6 +14,7 @@ import {
 } from '@/lib/financial-engine';
 import { getModelMetadata } from '@/lib/model-metadata';
 import SimulationCharts from './simulation-charts';
+import { CDIComparison } from '../../_components/cdi-comparison';
 
 export default function SimulacaoClient() {
   const searchParams = useSearchParams();
@@ -105,6 +106,9 @@ export default function SimulacaoClient() {
           </div>
         </div>
       </motion.div>
+
+      {/* CDI Comparison */}
+      <CDIComparison />
 
       {/* Configuration Panel */}
       <motion.div

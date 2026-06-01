@@ -12,6 +12,7 @@ import {
 } from '@/lib/financial-engine';
 import { getModelMetadata, type ModelMetadata } from '@/lib/model-metadata';
 import Link from 'next/link';
+import { CDIComparison } from '../../_components/cdi-comparison';
 
 const CompCharts = dynamic(() => import('./comp-charts'), { ssr: false, loading: () => <div className="h-64 flex items-center justify-center text-gray-500">Carregando gráficos...</div> });
 
@@ -42,6 +43,9 @@ export default function ComparativoClient() {
         </h1>
         <p className="text-gray-500 text-sm mt-1">Compare investimento, faturamento, ROI e diferenciais de cada modelo.</p>
       </motion.div>
+
+      {/* CDI Comparison */}
+      <CDIComparison />
 
       {/* Cenário selector */}
       <div className="flex gap-2">

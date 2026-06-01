@@ -10,6 +10,7 @@ import {
 import { formatCurrency, formatPercent } from '@/lib/financial-engine';
 import type { CustomConfig, CustomYearlyResult, CustomResults } from './personalizado-types';
 import { exportPersonalizadoPDF } from './personalizado-pdf';
+import { CDIComparison } from '../../_components/cdi-comparison';
 
 const PersonalizadoCharts = dynamic(() => import('./personalizado-charts'), {
   ssr: false,
@@ -266,6 +267,9 @@ export default function PersonalizadoClient() {
         </h1>
         <p className="text-gray-500 text-sm mt-1">Monte sua própria simulação com todas as premissas editáveis.</p>
       </motion.div>
+
+      {/* CDI Comparison */}
+      <CDIComparison />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-2xl p-6">
         {/* Infrastructure */}
