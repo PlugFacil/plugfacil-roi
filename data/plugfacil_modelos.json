@@ -2,7 +2,7 @@
   "modelos": [
     {
       "modelo": "Essencial",
-      "investimento": 25000,
+      "investimento": 23000,
       "carregadores": { "dc": 0, "ac": 2 },
       "potencia_kw": { "dc": 0, "ac": 7 },
       "tempo_recarga_min": { "dc": null, "ac": 240 },
@@ -11,7 +11,7 @@
     },
     {
       "modelo": "Basico",
-      "investimento": 75000,
+      "investimento": 65000,
       "carregadores": { "dc": 1, "ac": 0 },
       "potencia_kw": { "dc": 30, "ac": 0 },
       "tempo_recarga_min": { "dc": 40, "ac": null },
@@ -20,7 +20,7 @@
     },
     {
       "modelo": "Padrao",
-      "investimento": 90000,
+      "investimento": 85000,
       "carregadores": { "dc": 1, "ac": 1 },
       "potencia_kw": { "dc": 40, "ac": 7 },
       "tempo_recarga_min": { "dc": 35, "ac": 240 },
@@ -29,7 +29,7 @@
     },
     {
       "modelo": "Turbo",
-      "investimento": 190000,
+      "investimento": 160000,
       "carregadores": { "dc": 1, "ac": 2 },
       "potencia_kw": { "dc": 80, "ac": 7 },
       "tempo_recarga_min": { "dc": 25, "ac": 240 },
@@ -38,7 +38,7 @@
     },
     {
       "modelo": "Hub",
-      "investimento": 250000,
+      "investimento": 215000,
       "carregadores": { "dc": 2, "ac": 3 },
       "potencia_kw": { "dc": 120, "ac": 7 },
       "tempo_recarga_min": { "dc": 20, "ac": 240 },
