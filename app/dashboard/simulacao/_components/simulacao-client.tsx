@@ -408,8 +408,8 @@ export default function SimulacaoClient() {
                 { icon: DollarSign, label: 'Investimento', value: formatCurrency(results?.investimentoTotal ?? 0), color: 'text-white', bg: 'bg-white/5' },
                 { icon: Clock, label: 'Payback', value: `${results?.paybackMeses ?? 0} meses`, color: 'text-amber-400', bg: 'bg-amber-500/10' },
                 { icon: TrendingUp, label: 'ROI 10 anos', value: formatPercent(results?.roiPercent ?? 0), color: (results?.roiPercent ?? 0) > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-emerald-500/10' },
-                { icon: BarChart3, label: 'VPL', value: formatCurrency(results?.vpl ?? 0), color: (results?.vpl ?? 0) > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-blue-500/10' },
-                { icon: Percent, label: 'TIR', value: formatPercent(results?.tir ?? 0), color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                { icon: BarChart3, label: 'Rendimento vs CDI', value: formatPercent((results?.roiPercent ?? 0) - 10.5), color: (results?.roiPercent ?? 0) > 10.5 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-blue-500/10', tooltip: 'Rentabilidade anual do eletroposto menos rentabilidade do CDI/CDB (10.5% a.a.)' },
+                { icon: Percent, label: 'Rendimento Médio Anual', value: formatPercent((results?.lucroMensalAno1 ?? 0) * 12 / (results?.investimentoTotal ?? 1) * 100), color: 'text-purple-400', bg: 'bg-purple-500/10', tooltip: 'Lucro anual do primeiro ano dividido pelo investimento inicial' },
                 { icon: Target, label: 'Margem Líquida', value: formatPercent(results?.margemMedia ?? 0), color: 'text-purple-400', bg: 'bg-purple-500/10' },
               ].map((kpi: any, i: number) => {
                 const Icon = kpi.icon;
@@ -419,11 +419,17 @@ export default function SimulacaoClient() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.05 }}
-                    className={`${kpi.bg} rounded-xl p-4 border border-white/5`}
+                    className={`${kpi.bg} rounded-xl p-4 border border-white/5 relative group`}
+                    title={kpi.tooltip}
                   >
                     <Icon className={`w-4 h-4 ${kpi.color} mb-2`} />
                     <p className={`text-lg font-bold ${kpi.color}`}>{kpi.value}</p>
                     <p className="text-xs text-gray-500 mt-0.5">{kpi.label}</p>
+                    {kpi.tooltip && (
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-gray-900 text-gray-200 text-xs px-2 py-1 rounded whitespace-nowrap z-10 border border-gray-700">
+                        {kpi.tooltip}
+                      </div>
+                    )}
                   </motion.div>
                 );
               })}
@@ -497,27 +503,54 @@ export default function SimulacaoClient() {
                 transition={{ delay: 0.4 }}
                 className="glass rounded-2xl p-6"
               >
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <DollarSign className="w-5 h-5 text-emerald-400" /> Detalhamento de Custos (Ano 1)
-                </h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-emerald-400" /> Detalhamento de Custos (Ano 1)
+                  </h3>
+                  <div className="group relative">
+                    <button className="text-xs text-gray-500 hover:text-gray-400 bg-white/5 px-2 py-1 rounded">?</button>
+                    <div className="absolute right-0 top-full mt-2 hidden group-hover:block bg-gray-900 text-gray-200 text-xs px-3 py-2 rounded whitespace-nowrap z-10 border border-gray-700">
+                      Os percentuais mostram a proporção do faturamento bruto
+                    </div>
+                  </div>
+                </div>
                 {(() => {
                   const y = results.yearly[0];
+                  const receitaTotal = y.receitaTotal || 1;
                   const items = [
-                    { label: 'Receita Total', value: y.receitaTotal, color: 'text-emerald-400', bold: true },
-                    { label: `(-) Retenção Plataforma (${params?.retencaoPct}% + R$${params?.mensalidadeMensal}/mês)`, value: -y.retencaoPlataforma, color: 'text-red-400' },
-                    { label: `(-) Custo de Energia (c/ ${params?.perdasEnergia}% perdas)`, value: -y.custoEnergia, color: 'text-red-400' },
-                    { label: `(-) Royalties PlugFácil (${params?.royaltiesPct}%)`, value: -y.royalties, color: 'text-red-400' },
-                    { label: '= Resultado Operacional', value: y.resultadoOperacional, color: 'text-blue-400', bold: true },
-                    { label: `(-) Impostos (${params?.impostosPct}%)`, value: -y.impostos, color: 'text-red-400' },
-                    { label: `(-) Provisionamento (${params?.provisionamentoPct}%)`, value: -y.provisionamento, color: 'text-red-400' },
-                    { label: '= Lucro Líquido', value: y.lucroLiquido, color: 'text-emerald-400', bold: true },
+                    { label: 'Receita Total', value: y.receitaTotal, color: 'text-emerald-400', bold: true, pctOfReceita: 100 },
+                    { label: `Retenção Plataforma (${params?.retencaoPct}% faturamento + R$${params?.mensalidadeMensal}/mês)`, value: y.retencaoPlataforma, color: 'text-red-400', pctOfReceita: (y.retencaoPlataforma / receitaTotal * 100) },
+                    { label: `Custo de Energia (c/ ${params?.perdasEnergia}% perdas)`, value: y.custoEnergia, color: 'text-red-400', pctOfReceita: (y.custoEnergia / receitaTotal * 100) },
+                    { label: `Royalties PlugFácil (${params?.royaltiesPct}% faturamento)`, value: y.royalties, color: 'text-red-400', pctOfReceita: (y.royalties / receitaTotal * 100) },
+                    { label: '= Resultado Operacional', value: y.resultadoOperacional, color: 'text-blue-400', bold: true, pctOfReceita: (y.resultadoOperacional / receitaTotal * 100) },
+                    { label: `Impostos (${params?.impostosPct}% lucro operacional)`, value: y.impostos, color: 'text-red-400', pctOfReceita: (y.impostos / receitaTotal * 100) },
+                    { label: `Provisionamento (${params?.provisionamentoPct}% lucro operacional)`, value: y.provisionamento, color: 'text-red-400', pctOfReceita: (y.provisionamento / receitaTotal * 100) },
+                    { label: '= Lucro Líquido', value: y.lucroLiquido, color: 'text-emerald-400', bold: true, pctOfReceita: (y.lucroLiquido / receitaTotal * 100) },
                   ];
                   return (
                     <div className="space-y-2">
                       {items.map((item, i) => (
-                        <div key={i} className={`flex justify-between items-center py-1.5 ${item.bold ? 'border-t border-white/10 pt-2' : ''}`}>
-                          <span className={`text-sm ${item.bold ? 'text-white font-semibold' : 'text-gray-400'}`}>{item.label}</span>
-                          <span className={`text-sm font-medium ${item.color}`}>{formatCurrency(Math.abs(item.value))}</span>
+                        <div key={i} className={`flex justify-between items-center py-1.5 px-2 rounded group ${item.bold ? 'border-t border-white/10 pt-2' : 'hover:bg-white/5'}`}>
+                          <span className={`text-sm flex items-center gap-1 ${item.bold ? 'text-white font-semibold' : 'text-gray-400'}`}>
+                            {!item.bold && item.label.startsWith('(') ? (
+                              <>
+                                {item.label.replace(/\(.*?\)/, '').trim()}
+                                <span className="hidden group-hover:inline text-xs text-gray-500 ml-1">
+                                  {item.label.match(/\(.*?\)/)?.[0] || ''}
+                                </span>
+                              </>
+                            ) : (
+                              item.label
+                            )}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium ${item.color}`}>{formatCurrency(Math.abs(item.value))}</span>
+                            {!item.bold && (
+                              <span className="text-xs text-gray-600 bg-white/5 px-1.5 py-0.5 rounded">
+                                {item.pctOfReceita.toFixed(1)}% da receita
+                              </span>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>

@@ -455,9 +455,9 @@ export default function PersonalizadoClient() {
               {([
                 { icon: DollarSign, label: 'Investimento', value: formatCurrency(config.custoEquipamento + config.custoInstalacao), color: 'text-white', bg: 'bg-white/5' },
                 { icon: Clock, label: 'Payback', value: `${results.paybackMeses} meses`, color: 'text-amber-400', bg: 'bg-amber-500/10' },
-                { icon: TrendingUp, label: 'ROI', value: formatPercent(results.roiPercent), color: results.roiPercent > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-emerald-500/10' },
-                { icon: BarChart3, label: 'VPL', value: formatCurrency(results.vpl), color: results.vpl > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-blue-500/10' },
-                { icon: Percent, label: 'TIR', value: formatPercent(results.tir), color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                { icon: TrendingUp, label: 'ROI 10 anos', value: formatPercent(results.roiPercent), color: results.roiPercent > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-emerald-500/10' },
+                { icon: BarChart3, label: 'Rendimento vs CDI', value: formatPercent(results.roiPercent - 10.5), color: results.roiPercent > 10.5 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-blue-500/10' },
+                { icon: Percent, label: 'Rendimento Médio/Ano', value: formatPercent((results.lucroMensalAno1 * 12) / (config.custoEquipamento + config.custoInstalacao) * 100), color: 'text-blue-400', bg: 'bg-blue-500/10' },
                 { icon: Target, label: 'Margem', value: formatPercent(results.margemMedia), color: 'text-purple-400', bg: 'bg-purple-500/10' },
               ] as const).map((kpi, i) => {
                 const Icon = kpi.icon;
@@ -496,14 +496,14 @@ export default function PersonalizadoClient() {
                 return `Depreciação linear: ${formatCurrency(deprecAno)}/ano (${taxaAno.toFixed(1)}% ao ano sobre ${formatCurrency(inv)})`;
               })()}
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
               {([
                 { icon: Clock, label: 'Payback Eco.', value: `${results.paybackMesesEconomico} meses`, color: 'text-amber-400', bg: 'bg-amber-500/10' },
                 { icon: TrendingUp, label: 'ROI Eco.', value: formatPercent(results.roiPercentEconomico), color: results.roiPercentEconomico > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-emerald-500/10' },
-                { icon: BarChart3, label: 'VPL Eco.', value: formatCurrency(results.vplEconomico), color: results.vplEconomico > 0 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-blue-500/10' },
-                { icon: Percent, label: 'TIR Eco.', value: formatPercent(results.tirEconomica), color: 'text-blue-400', bg: 'bg-blue-500/10' },
-                { icon: Target, label: 'Margem Eco.', value: formatPercent(results.margemMediaEconomica), color: 'text-purple-400', bg: 'bg-purple-500/10' },
+                { icon: BarChart3, label: 'Rendimento vs CDI', value: formatPercent(results.roiPercentEconomico - 10.5), color: results.roiPercentEconomico > 10.5 ? 'text-emerald-400' : 'text-red-400', bg: 'bg-blue-500/10' },
+                { icon: Percent, label: 'Margem Eco.', value: formatPercent(results.margemMediaEconomica), color: 'text-purple-400', bg: 'bg-purple-500/10' },
                 { icon: DollarSign, label: 'Valor Residual', value: formatCurrency(results.valorResidualFinal), color: 'text-orange-400', bg: 'bg-orange-500/10' },
+                { icon: Target, label: 'Lucro/Ano (Ano 1)', value: formatCurrency(results.lucroMensalAno1 * 12), color: 'text-green-400', bg: 'bg-green-500/10' },
               ] as const).map((kpi, i) => {
                 const Icon = kpi.icon;
                 return (

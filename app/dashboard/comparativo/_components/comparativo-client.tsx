@@ -113,12 +113,12 @@ export default function ComparativoClient() {
                   <p className="text-blue-400 font-bold text-sm">{formatCurrency(r?.lucroMensalAno1 ?? 0)}</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-2">
-                  <p className="text-xs text-gray-500">VPL</p>
-                  <p className={`font-bold text-sm ${(r?.vpl ?? 0) >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>{formatCurrency(r?.vpl ?? 0)}</p>
+                  <p className="text-xs text-gray-500">ROI 10 anos</p>
+                  <p className={`font-bold text-sm ${(r?.roiPercent ?? 0) > 0 ? 'text-emerald-400' : 'text-red-400'}`}>{formatPercent(r?.roiPercent ?? 0)}</p>
                 </div>
                 <div className="bg-white/5 rounded-lg p-2">
-                  <p className="text-xs text-gray-500">TIR</p>
-                  <p className="text-purple-400 font-bold text-sm">{formatPercent(r?.tir ?? 0)}</p>
+                  <p className="text-xs text-gray-500">Margem Líquida Ano 1</p>
+                  <p className="text-purple-400 font-bold text-sm">{formatPercent(r?.margemMedia ?? 0)}</p>
                 </div>
               </div>
 
