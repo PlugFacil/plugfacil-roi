@@ -84,7 +84,16 @@ export default function ChartsInner({ results }: { results: SimulationResults })
 
       {/* Cost Breakdown Pie */}
       <div className="glass rounded-2xl p-6">
-        <h3 className="text-sm font-semibold text-white mb-4">Composição de Custos (Ano 1)</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-semibold text-white">Composição de Custos (Ano 1)</h3>
+          <div className="flex items-center gap-3 text-xs">
+            <div className="flex items-center gap-1">
+              <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
+              <span className="text-gray-400">% do Total</span>
+            </div>
+          </div>
+        </div>
+        <p className="text-xs text-gray-500 mb-3">Cada fatia mostra a proporção do custo total do ano. Passe o mouse para ver o valor em reais.</p>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -102,7 +111,7 @@ export default function ChartsInner({ results }: { results: SimulationResults })
                   <Cell key={idx} fill={['#FF9149', '#A19AD3', '#60B5FF', '#FF6363', '#80D8C3'][idx % 5]} />
                 ))}
               </Pie>
-              <Tooltip contentStyle={tooltipStyle} formatter={(val: any) => formatBRL(val)} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(val: any) => `Custo: ${formatBRL(val)}`} />
             </PieChart>
           </ResponsiveContainer>
         </div>
