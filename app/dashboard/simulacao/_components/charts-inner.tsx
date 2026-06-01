@@ -20,8 +20,8 @@ export default function ChartsInner({ results }: { results: SimulationResults })
   const y1 = results?.yearly?.[0];
   const costPieData = y1 ? [
     { name: 'Energia', value: Math.round(y1.custoEnergia) },
-    { name: 'Royalties', value: Math.round(y1.royalties) },
-    { name: 'Plataforma', value: Math.round(y1.retencaoPlataforma) },
+    { name: 'Royalties (12%)', value: Math.round(y1.royalties) },
+    { name: 'Plataforma (10%)', value: Math.round(y1.retencaoPlataforma) },
     { name: 'Impostos', value: Math.round(y1.impostos) },
   ].filter((d) => (d.value ?? 0) > 0) : [];
 
@@ -85,14 +85,11 @@ export default function ChartsInner({ results }: { results: SimulationResults })
       <div className="glass rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-semibold text-white">Composição de Custos (Ano 1)</h3>
-          <div className="flex items-center gap-3 text-xs">
-            <div className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-gray-500 rounded-full"></span>
-              <span className="text-gray-400">% do Total</span>
-            </div>
-          </div>
         </div>
-        <p className="text-xs text-gray-500 mb-3">Cada fatia mostra a proporção do custo total do ano. Passe o mouse para ver o valor em reais.</p>
+        <p className="text-xs text-gray-500 mb-3">
+          <span className="text-emerald-400 font-semibold">Entre parênteses:</span> taxa fixa aplicada sobre faturamento.
+          <span className="text-emerald-400 font-semibold ml-2">No gráfico:</span> proporção do custo total. Passe o mouse para ver o valor em reais.
+        </p>
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
