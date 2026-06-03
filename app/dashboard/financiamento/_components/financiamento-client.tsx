@@ -32,9 +32,20 @@ export default function FinanciamentoClient() {
   const modelos = getModelos();
   const [modelo, setModelo] = useState('Padrao');
   const [cenario, setCenario] = useState<'pessimista' | 'base' | 'otimista'>('base');
-  const [parcelas, setParcelas] = useState(18);
-  const [taxaCartao, setTaxaCartao] = useState(0); // % total spread over installments
-  const [entrada, setEntrada] = useState(0); // % down payment
+  const [parcelas, setParcelas] = useState(12);
+  const [bandeira, setBandeira] = useState<'visa' | 'mastercard' | 'elo' | 'cabal' | 'amex'>('visa'); // Sicredi bandeira
+  const [entrada, setEntrada] = useState(0); // R$ down payment
+  const [entradaPercent, setEntradaPercent] = useState(0); // Entrada em %
+
+  // Taxas Sicredi por bandeira (parcelado 12x)
+  const taxasSicredi: Record<string, number> = {
+    'visa': 0.012,      // 1.2%
+    'mastercard': 0.012, // 1.2%
+    'elo': 0.030,       // 3%
+    'cabal': 0.030,     // 3%
+    'amex': 0.030       // 3%
+  };
+  const taxaCartao = taxasSicredi[bandeira] * 100; // Converte para %
 
   const selectedModelo = modelos?.find?.((m: ModeloFranquia) => m?.modelo === modelo);
   const meta = getModelMetadata(modelo);
@@ -44,7 +55,8 @@ export default function FinanciamentoClient() {
     if (!selectedModelo) return null;
 
     const investimento = selectedModelo.investimento;
-    const valorEntrada = investimento * (entrada / 100);
+    // Usar entrada em R$ se fornecida, senão usar %
+    const valorEntrada = entrada > 0 ? entrada : (investimento * (entradaPercent / 100));
     const valorFinanciado = investimento - valorEntrada;
     const jurosTotais = valorFinanciado * (taxaCartao / 100);
     const totalComJuros = valorFinanciado + jurosTotais;
@@ -109,7 +121,7 @@ export default function FinanciamentoClient() {
       cashFlowPositiveMonth1,
       sim,
     };
-  }, [modelo, cenario, parcelas, taxaCartao, entrada, selectedModelo]);
+  }, [modelo, cenario, parcelas, bandeira, entrada, entradaPercent, selectedModelo]);
 
   return (
     <div className="space-y-6">
@@ -128,7 +140,7 @@ export default function FinanciamentoClient() {
         <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
           <Calculator className="w-4 h-4 text-emerald-400" /> Parâmetros
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <div>
             <label className="text-xs text-gray-400 mb-1 block">Modelo</label>
             <select value={modelo} onChange={(e) => setModelo(e.target.value)}
@@ -155,17 +167,31 @@ export default function FinanciamentoClient() {
               className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition" />
           </div>
           <div>
-            <label className="text-xs text-gray-400 mb-1 block">Juros total do cartão (%)</label>
-            <input type="number" min={0} max={100} step={0.5} value={taxaCartao}
-              onChange={(e) => setTaxaCartao(parseFloat(e.target.value) || 0)}
-              className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition" />
-            <p className="text-xs text-gray-600 mt-1">0% = sem juros (cartão lojista/parceria)</p>
+            <label className="text-xs text-gray-400 mb-1 block">Bandeira (Taxa Sicredi)</label>
+            <select value={bandeira} onChange={(e) => setBandeira(e.target.value as any)}
+              className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition appearance-none cursor-pointer">
+              <option value="visa" className="bg-gray-900">VISA / Mastercard (1,2%)</option>
+              <option value="mastercard" className="bg-gray-900">ELO / CABAL / AMEX (3%)</option>
+              <option value="elo" className="bg-gray-900">ELO (3%)</option>
+              <option value="cabal" className="bg-gray-900">CABAL (3%)</option>
+              <option value="amex" className="bg-gray-900">AMEX (3%)</option>
+            </select>
+            <p className="text-xs text-gray-600 mt-1">Taxa MDR Sicredi 12x</p>
+          </div>
+          <div>
+            <label className="text-xs text-gray-400 mb-1 block">Entrada (R$)</label>
+            <input type="number" min={0} value={entrada}
+              onChange={(e) => { setEntrada(parseFloat(e.target.value) || 0); setEntradaPercent(0); }}
+              className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition"
+              placeholder="Ex: 30000"/>
+            <p className="text-xs text-gray-600 mt-1">PIX/Dinheiro</p>
           </div>
           <div>
             <label className="text-xs text-gray-400 mb-1 block">Entrada (%)</label>
-            <input type="number" min={0} max={100} step={5} value={entrada}
-              onChange={(e) => setEntrada(parseFloat(e.target.value) || 0)}
+            <input type="number" min={0} max={100} step={5} value={entradaPercent}
+              onChange={(e) => { setEntradaPercent(parseFloat(e.target.value) || 0); setEntrada(0); }}
               className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white text-sm focus:outline-none focus:border-emerald-500 transition" />
+            <p className="text-xs text-gray-600 mt-1">Ou em %</p>
           </div>
         </div>
       </motion.div>
