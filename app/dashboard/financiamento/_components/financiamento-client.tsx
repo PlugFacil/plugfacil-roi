@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import {
   CreditCard, DollarSign, Clock, TrendingUp, ArrowUpRight, ArrowDownRight,
-  Calculator, Info, RefreshCw, BarChart3
+  Calculator, Info, RefreshCw, BarChart3, Zap
 } from 'lucide-react';
 import {
   getModelos, runSimulation, formatCurrency, formatPercent, getModelParams,
@@ -108,6 +108,21 @@ export default function FinanciamentoClient() {
     // Monthly cash flow positive from month 1?
     const cashFlowPositiveMonth1 = months[0]?.fluxoLiquido > 0;
 
+    // CDI comparison (5 years / 60 months)
+    const cdiAnnualRate = 0.105; // 10.5% a.a.
+    const cdiMonthlyRate = Math.pow(1 + cdiAnnualRate, 1/12) - 1; // compound monthly
+    const cdi60Months = investimento * Math.pow(1 + cdiMonthlyRate, 60);
+    const cdiGain = cdi60Months - investimento;
+    const cdiMonthlyAvg = cdiGain / 60;
+
+    // Eletroposto value at 60 months
+    const eletropostoAcumulado60 = months[59]?.lucroAcumuladoEstacao || 0;
+    const eletropostoGain = eletropostoAcumulado60;
+    const eletropostoMonthlyAvg = eletropostoAcumulado60 / 60;
+
+    // Ganho comparativo (quanto a mais no eletroposto)
+    const ganhoAdicional = eletropostoAcumulado60 - cdiGain;
+
     return {
       investimento,
       valorEntrada,
@@ -120,6 +135,16 @@ export default function FinanciamentoClient() {
       breakEvenMonth: breakEvenMonth > 0 ? breakEvenMonth : horizonte,
       cashFlowPositiveMonth1,
       sim,
+      // CDI comparison
+      cdiAnnualRate,
+      cdiMonthlyRate,
+      cdi60Months,
+      cdiGain,
+      cdiMonthlyAvg,
+      eletropostoAcumulado60,
+      eletropostoGain,
+      eletropostoMonthlyAvg,
+      ganhoAdicional,
     };
   }, [modelo, cenario, parcelas, bandeira, entrada, entradaPercent, selectedModelo]);
 
@@ -264,6 +289,91 @@ export default function FinanciamentoClient() {
               <p className="text-xs text-gray-500">Break-even</p>
             </div>
           </div>
+
+          {/* CDI Comparison Section */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass rounded-2xl p-6 border border-blue-500/20">
+            <h3 className="text-white font-bold mb-4 flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-400" /> Comparação: Eletroposto vs CDI (5 anos)
+            </h3>
+            <p className="text-gray-400 text-sm mb-6">
+              Se você investisse o mesmo R${formatCurrency(financing.investimento)} em CDI por 5 anos, com rendimento de {formatPercent(financing.cdiAnnualRate)} a.a., versus investir em um eletroposto financiado:
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* CDI Column */}
+              <div className="bg-blue-500/5 rounded-xl p-6 border border-blue-500/20">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                  <h4 className="text-white font-semibold">CDI (Renda Fixa)</h4>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gray-500 text-xs mb-1">Investimento Inicial</p>
+                    <p className="text-2xl font-bold text-blue-400">{formatCurrency(financing.investimento)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs mb-1">Valor após 60 meses</p>
+                    <p className="text-2xl font-bold text-blue-400">{formatCurrency(financing.cdi60Months)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs mb-1">Ganho total</p>
+                    <p className="text-2xl font-bold text-emerald-400">{formatCurrency(financing.cdiGain)}</p>
+                  </div>
+                  <div className="pt-4 border-t border-blue-500/20">
+                    <p className="text-gray-500 text-xs mb-1">Rendimento mensal médio</p>
+                    <p className="text-lg font-bold text-blue-300">{formatCurrency(financing.cdiMonthlyAvg)}/mês</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Eletroposto Column */}
+              <div className="bg-emerald-500/5 rounded-xl p-6 border border-emerald-500/20">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+                  <h4 className="text-white font-semibold">Eletroposto PlugFácil</h4>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gray-500 text-xs mb-1">Investimento Inicial (Financiado)</p>
+                    <p className="text-2xl font-bold text-emerald-400">{formatCurrency(financing.investimento)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs mb-1">Lucro acumulado em 60 meses</p>
+                    <p className="text-2xl font-bold text-emerald-400">{formatCurrency(financing.eletropostoAcumulado60)}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500 text-xs mb-1">Ganho total</p>
+                    <p className="text-2xl font-bold text-emerald-400">{formatCurrency(financing.eletropostoGain)}</p>
+                  </div>
+                  <div className="pt-4 border-t border-emerald-500/20">
+                    <p className="text-gray-500 text-xs mb-1">Rendimento mensal médio</p>
+                    <p className="text-lg font-bold text-emerald-300">{formatCurrency(financing.eletropostoMonthlyAvg)}/mês</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Comparative Insight */}
+            <div className="mt-6 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="flex items-start gap-3">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${financing.ganhoAdicional > 0 ? 'bg-emerald-500/20' : 'bg-amber-500/20'}`}>
+                  {financing.ganhoAdicional > 0
+                    ? <ArrowUpRight className="w-5 h-5 text-emerald-400" />
+                    : <ArrowDownRight className="w-5 h-5 text-amber-400" />
+                  }
+                </div>
+                <div>
+                  <h4 className="text-white font-semibold mb-1">Diferença no ganho</h4>
+                  <p className={`text-sm ${financing.ganhoAdicional > 0 ? 'text-emerald-400' : 'text-amber-400'}`}>
+                    Eletroposto gera <span className="font-bold">{formatCurrency(Math.abs(financing.ganhoAdicional))}</span> {financing.ganhoAdicional > 0 ? 'a mais' : 'a menos'} que CDI em 5 anos.
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Isso é <span className="text-white font-semibold">{formatCurrency(financing.ganhoAdicional / 60)}/mês</span> a mais (ou menos) de média.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
 
           {/* Charts */}
           <FinanciamentoCharts months={financing.months} parcelas={parcelas} />
