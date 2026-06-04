@@ -2,5 +2,152 @@
   "financeiro": {
     "horizonte_analise_anos": 10,
     "taxa_desconto": 0.108
+  },
+  "cartao": {
+    "adquirente": "Sicredi",
+    "empresa_cnpj": "66.053.337/0001-75",
+    "faixa_faturamento": "100000.01-250000.00",
+    "taxa_administrativa_link": {
+      "geracao_link": 0.0004,
+      "3ds": 0.0018,
+      "antifraude": 0.0018
+    },
+    "antecipacao_mensal": {
+      "eventual": 0.0249,
+      "automatica": 0.0149
+    },
+    "bandeiras": {
+      "visa": {
+        "debito": 0.0069,
+        "credito_avista": 0.0100,
+        "parcelado_6x": 0.0100,
+        "parcelado_12x": 0.0120
+      },
+      "mastercard": {
+        "debito": 0.0069,
+        "credito_avista": 0.0100,
+        "parcelado_6x": 0.0100,
+        "parcelado_12x": 0.0120
+      },
+      "elo": {
+        "debito": 0.0120,
+        "credito_avista": 0.0200,
+        "parcelado_6x": 0.0270,
+        "parcelado_12x": 0.0300
+      },
+      "cabal": {
+        "debito": 0.0120,
+        "credito_avista": 0.0200,
+        "parcelado_6x": 0.0270,
+        "parcelado_12x": 0.0300
+      },
+      "amex": {
+        "debito": null,
+        "credito_avista": 0.0200,
+        "parcelado_6x": 0.0270,
+        "parcelado_12x": 0.0300
+      }
+    },
+    "taxa_recomendada_calculo": {
+      "descricao": "Usar taxa média (VISA/MC parcelado 12x) para cenário conservador",
+      "valor": 0.0120
+    },
+    "calculador_entrada_parcelamento": {
+      "descricao": "Calcula parcela com entrada em PIX/dinheiro + parcelamento no cartão",
+      "formula": "parcela = (saldo * (1 + taxa_mdr)) / numero_parcelas",
+      "exemplo": {
+        "valor_total": 85000,
+        "entrada_pix": 30000,
+        "saldo": 55000,
+        "taxa_mdr": 0.012,
+        "numero_parcelas": 12,
+        "parcela_mensal": 4679
+      },
+      "impacto_entrada": {
+        "essencial_cada_5k": 418,
+        "start_cada_10k": 850,
+        "pro_cada_10k": 1075,
+        "turbo_cada_20k": 2149,
+        "hub_cada_20k": 1701
+      }
+    },
+    "maquininha_completa": {
+      "descricao": "Inteligência completa: MDR + Antecipação Automática (1,49% a.m)",
+      "premissa": "PlugFácil recebe valor LÍQUIDO. Cliente paga TODAS as taxas nas parcelas.",
+      "formula_custo_total": "Custo Total = (Valor × Taxa_Cartão%) + (Valor × 1,49% × Prazo_Médio_Meses)",
+      "formula_parcela_final": "Parcela Final = (Valor ÷ Parcelas) + (Custo Total ÷ Parcelas)",
+      "prazo_medio_meses": {
+        "1x": 0,
+        "2x": 1,
+        "3x": 1.5,
+        "6x": 3,
+        "12x": 6,
+        "18x": 9,
+        "21x": 10
+      },
+      "taxas_por_bandeira": {
+        "visa_mastercard": {
+          "1x": 0.012,
+          "2x": 0.012,
+          "6x": 0.012,
+          "12x": 0.012,
+          "21x": 0.012
+        },
+        "elo_cabal_amex": {
+          "1x": 0.020,
+          "6x": 0.027,
+          "12x": 0.030,
+          "21x": 0.030
+        }
+      },
+      "antecipacao_mensal": 0.0149,
+      "exemplos_calculos": {
+        "PRO_12x_VISA": {
+          "valor": 85000,
+          "bandeira": "VISA",
+          "parcelas": 12,
+          "taxa_cartao_percentual": 1.2,
+          "taxa_cartao_valor": 1020,
+          "prazo_medio_meses": 6,
+          "antecipacao_valor": 7599,
+          "custo_total": 8619,
+          "taxa_por_parcela": 718,
+          "parcela_base": 7083,
+          "parcela_final": 7801,
+          "valor_liquido_plugfacil": 85000,
+          "valor_total_cliente": 93612
+        },
+        "START_6x_ELO": {
+          "valor": 65000,
+          "bandeira": "ELO",
+          "parcelas": 6,
+          "taxa_cartao_percentual": 2.7,
+          "taxa_cartao_valor": 1755,
+          "prazo_medio_meses": 3,
+          "antecipacao_valor": 2906,
+          "custo_total": 4661,
+          "taxa_por_parcela": 777,
+          "parcela_base": 10833,
+          "parcela_final": 11610,
+          "valor_liquido_plugfacil": 65000,
+          "valor_total_cliente": 69660
+        },
+        "ESSENCIAL_21x_VISA": {
+          "valor": 23000,
+          "bandeira": "VISA",
+          "parcelas": 21,
+          "taxa_cartao_percentual": 1.2,
+          "taxa_cartao_valor": 276,
+          "prazo_medio_meses": 10,
+          "antecipacao_valor": 3427,
+          "custo_total": 3703,
+          "taxa_por_parcela": 176,
+          "parcela_base": 1095,
+          "parcela_final": 1271,
+          "valor_liquido_plugfacil": 23000,
+          "valor_total_cliente": 26691
+        }
+      }
+    }
   }
 }
